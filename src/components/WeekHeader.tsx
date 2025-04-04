@@ -12,7 +12,7 @@ const WeekHeader: React.FC<WeekHeaderProps> = ({ currentDate }) => {
   // Generate days of the week
   const daysOfWeek = Array.from({ length: 7 }, (_, i) => {
     const day = addDays(startOfCurrentWeek, i);
-    const dayName = format(day, 'EEE');
+    const dayName = format(day, 'EEE'); // Short weekday name
     const dayNumber = format(day, 'd');
     const isToday = format(currentDate, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd');
     
@@ -20,19 +20,19 @@ const WeekHeader: React.FC<WeekHeaderProps> = ({ currentDate }) => {
   });
 
   return (
-    <div className="bg-white sticky top-0 z-10 shadow-sm">
+    <div className="bg-background dark:bg-gray-900 sticky top-0 z-10 shadow-sm">
       <div className="flex items-center justify-between px-4 py-3">
         <h1 className="text-lg font-bold">Week Todo</h1>
         <div className="text-sm text-muted-foreground">
           {format(startOfCurrentWeek, 'MMM d')} - {format(addDays(startOfCurrentWeek, 6), 'MMM d, yyyy')}
         </div>
       </div>
-      <div className="flex border-b">
+      <div className="flex border-b dark:border-gray-800">
         {daysOfWeek.map((day) => (
           <div key={day.dayNumber} className="day-column">
             <div className={`day-header ${day.isToday ? 'bg-primary/10 text-primary' : ''}`}>
-              <span className="text-xs">{day.dayName}</span>
-              <span className={`${day.isToday ? 'h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center' : ''}`}>
+              <span className="text-xs font-medium">{day.dayName}</span>
+              <span className={`mt-1 ${day.isToday ? 'h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center' : ''}`}>
                 {day.dayNumber}
               </span>
             </div>
