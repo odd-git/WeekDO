@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { format, startOfWeek, addDays } from 'date-fns';
 import { Plus, Menu, List as ListIcon } from 'lucide-react';
@@ -10,6 +9,8 @@ import { useToast } from '@/hooks/use-toast';
 import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Separator } from '@/components/ui/separator';
+import TaskItem from '../components/TaskItem';
 import CustomLists from '../components/CustomLists';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -24,13 +25,11 @@ const Index = () => {
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
 
-  // Load tasks and lists from localStorage on component mount
   useEffect(() => {
     const savedTasks = localStorage.getItem('weekTodoTasks');
     if (savedTasks) {
       try {
         const parsedTasks = JSON.parse(savedTasks);
-        // Convert string dates back to Date objects
         const tasksWithDates = parsedTasks.map((task: any) => ({
           ...task,
           createdAt: new Date(task.createdAt)
@@ -56,7 +55,6 @@ const Index = () => {
     }
   }, []);
 
-  // Save tasks and lists to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('weekTodoTasks', JSON.stringify(tasks));
   }, [tasks]);
@@ -65,7 +63,6 @@ const Index = () => {
     localStorage.setItem('weekTodoLists', JSON.stringify(lists));
   }, [lists]);
 
-  // Listen for events to open the add task form
   useEffect(() => {
     const handleOpenAddTask = (e: CustomEvent) => {
       setSelectedDay(e.detail.selectedDay);
@@ -147,13 +144,9 @@ const Index = () => {
   const handleDeleteList = (id: string) => {
     const listToDelete = lists.find(list => list.id === id);
     
-    // Delete the list
     setLists(lists.filter(list => list.id !== id));
-    
-    // Delete or reassign tasks from this list
     setTasks(tasks.filter(task => task.listId !== id));
     
-    // If we were viewing this list, go back to week view
     if (selectedListId === id) {
       setSelectedListId(undefined);
     }
@@ -171,7 +164,6 @@ const Index = () => {
     setFormVisible(true);
   };
 
-  // Toggle between light and dark mode
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
@@ -266,7 +258,6 @@ const Index = () => {
           </>
         )}
 
-        {/* Floating Action Button */}
         <button 
           onClick={() => {
             setSelectedDay(undefined);
@@ -278,7 +269,6 @@ const Index = () => {
           <Plus size={24} />
         </button>
         
-        {/* Background overlay when form is visible */}
         {formVisible && (
           <div 
             className="fixed inset-0 bg-black/40 dark:bg-black/60 z-10"
