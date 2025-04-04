@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -12,7 +13,7 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1rem',
 			screens: {
 				'2xl': '1400px'
 			}
@@ -61,7 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                category: {
+                    red: '#FF7272',
+                    green: '#4CAF50',
+                    blue: '#2196F3',
+                    yellow: '#FFC107',
+                    purple: '#9C27B0'
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +92,33 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'slide-in-up': {
+                    '0%': { 
+                        transform: 'translateY(100%)',
+                        opacity: '0'
+                    },
+                    '100%': {
+                        transform: 'translateY(0)',
+                        opacity: '1'
+                    }
+                },
+                'slide-out-down': {
+                    '0%': {
+                        transform: 'translateY(0)',
+                        opacity: '1'
+                    },
+                    '100%': {
+                        transform: 'translateY(100%)',
+                        opacity: '0'
+                    }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'slide-in-up': 'slide-in-up 0.3s ease-out',
+                'slide-out-down': 'slide-out-down 0.3s ease-out'
 			}
 		}
 	},
