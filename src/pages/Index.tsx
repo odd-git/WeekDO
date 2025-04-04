@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { format, startOfWeek, addDays } from 'date-fns';
+import { format, startOfWeek, addDays, parseISO } from 'date-fns';
 import { Plus, Menu, List as ListIcon } from 'lucide-react';
 import { Task, CustomList } from '../types';
 import WeekHeader from '../components/WeekHeader';
@@ -75,6 +75,12 @@ const Index = () => {
       document.removeEventListener('open-add-task', handleOpenAddTask as EventListener);
     };
   }, []);
+
+  const handleDateSelect = (date: Date) => {
+    setCurrentDate(date);
+    const dayName = format(date, 'EEEE');
+    setSelectedDay(dayName);
+  };
 
   const startOfCurrentWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
   
@@ -240,7 +246,11 @@ const Index = () => {
           </div>
         ) : (
           <>
-            <WeekHeader currentDate={currentDate} />
+            <WeekHeader 
+              currentDate={currentDate} 
+              tasks={tasks.filter(task => !task.listId)} 
+              onDateSelect={handleDateSelect}
+            />
             
             <div className="flex flex-1 overflow-hidden">
               {daysOfWeek.map((day) => (
