@@ -15,6 +15,7 @@ interface AddTaskFormProps {
   selectedDay?: string;
   editingTask?: Task | null;
   onUpdateTask?: (task: Task) => void;
+  inCustomList?: boolean;
 }
 
 const TaskCategoryButton = ({ 
@@ -31,7 +32,7 @@ const TaskCategoryButton = ({
     onClick={onClick}
     className={cn(
       "w-6 h-6 rounded-full",
-      selected && "ring-2 ring-offset-2 ring-primary"
+      selected && "ring-2 ring-offset-2 ring-primary dark:ring-primary-dark"
     )}
     style={{ backgroundColor: `var(--tw-color-category-${category})` }}
   />
@@ -43,12 +44,14 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
   onAddTask, 
   selectedDay,
   editingTask,
-  onUpdateTask 
+  onUpdateTask,
+  inCustomList = false
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [day, setDay] = useState(selectedDay || format(new Date(), 'EEEE'));
   const [category, setCategory] = useState<TaskCategory>('blue');
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const categories: TaskCategory[] = ['red', 'green', 'blue', 'yellow', 'purple'];
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -64,6 +67,18 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
       setDay(selectedDay || format(new Date(), 'EEEE'));
     }
   }, [editingTask, selectedDay]);
+
+  // Focus the input field when the form becomes visible
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        const titleInput = document.getElementById('task-title');
+        if (titleInput) {
+          titleInput.focus();
+        }
+      }, 300);
+    }
+  }, [visible]);
 
   const resetForm = () => {
     setTitle('');
@@ -81,14 +96,14 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
         ...editingTask,
         title,
         description,
-        day,
+        day: inCustomList ? '' : day,
         category
       });
     } else {
       onAddTask({
         title,
         description,
-        day,
+        day: inCustomList ? '' : day,
         completed: false,
         category
       });
@@ -100,14 +115,14 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
 
   return (
     <div className={cn(
-      "add-task-form z-20",
+      "add-task-form z-20 dark:bg-gray-900 dark:border-gray-700",
       visible && "visible"
     )}>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">
           {editingTask ? 'Edit Task' : 'Add New Task'}
         </h2>
-        <button onClick={onClose} className="p-1 rounded-full hover:bg-muted">
+        <button onClick={onClose} className="p-1 rounded-full hover:bg-muted dark:hover:bg-gray-800">
           <X size={20} />
         </button>
       </div>
@@ -115,6 +130,7 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <Input
+            id="task-title"
             type="text"
             placeholder="Task title"
             value={title}
@@ -134,18 +150,20 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({
           />
         </div>
         
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Day</label>
-          <select
-            value={day}
-            onChange={(e) => setDay(e.target.value)}
-            className="w-full p-2 border rounded-md"
-          >
-            {daysOfWeek.map((d) => (
-              <option key={d} value={d}>{d}</option>
-            ))}
-          </select>
-        </div>
+        {!inCustomList && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Day</label>
+            <select
+              value={day}
+              onChange={(e) => setDay(e.target.value)}
+              className="w-full p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
+            >
+              {daysOfWeek.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+          </div>
+        )}
         
         <div className="mb-6">
           <label className="block text-sm font-medium mb-2">Category</label>

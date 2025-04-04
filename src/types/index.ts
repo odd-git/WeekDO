@@ -9,4 +9,11 @@ export interface Task {
   completed: boolean;
   category: TaskCategory;
   createdAt: Date;
+  listId?: string; // Optional reference to a list
+}
+
+export interface CustomList {
+  id: string;
+  name: string;
+  createdAt: Date;
 }

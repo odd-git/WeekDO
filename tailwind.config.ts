@@ -2,7 +2,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: ["class"],
+	darkMode: "class",
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -21,11 +21,18 @@ export default {
 		extend: {
 			colors: {
 				border: 'hsl(var(--border))',
+				"border-dark": 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
+				"background-dark": 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				"foreground-dark": 'hsl(var(--foreground))',
 				primary: {
+					DEFAULT: 'hsl(var(--primary))',
+					foreground: 'hsl(var(--primary-foreground))'
+				},
+				"primary-dark": {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
@@ -42,6 +49,10 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
+					DEFAULT: 'hsl(var(--accent))',
+					foreground: 'hsl(var(--accent-foreground))'
+				},
+				"accent-dark": {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
